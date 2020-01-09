@@ -55,4 +55,4 @@ steps:
     python3 tools/pull-request.py azure azure-libraries-for-java "Release $(VERSION)" "azure-fluent:$(VERSION)"
   env:
     GITHUB_TOKEN: $(GITHUB_TOKEN)
-  condition: and(succeeded(), ne(variables['buildFromPom'],, true))
+  condition: and(succeeded(), ne(variables['buildFromPom'], true))
