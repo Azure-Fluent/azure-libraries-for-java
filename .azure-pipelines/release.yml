@@ -59,7 +59,7 @@ steps:
     jdkVersionOption: '1.8'
     jdkArchitectureOption: 'x64'
     publishJUnitResults: false
-    goals: 'com.microsoft.azure:bundler-maven-plugin:auto'
+    goals: 'compile'
 - bash: |
     git log -2
     git push https://$(GITHUB_TOKEN)@github.com/azure-fluent/azure-libraries-for-java HEAD:refs/heads/$(VERSION) -f
