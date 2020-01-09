@@ -7,7 +7,7 @@ trigger: none
 pr: none
 
 pool:
-  vmImage: 'ubuntu-18.04'
+  vmImage: 'vs2017-win2016'
 
 steps:
 - bash: |
