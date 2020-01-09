@@ -39,7 +39,7 @@ steps:
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
     goals: 'com.microsoft.azure:bundler-maven-plugin:bundle'
 - task: Maven@3
-  condition: ne(variables['buildFromPom'],, true)
+  condition: ne(variables['buildFromPom'], true)
   inputs:
     mavenPomFile: 'pom.xml'
     mavenOptions: '-Xmx3072m -Dversion=$(VERSION) -DdevVersion=$(DEVVERSION)-SNAPSHOT'
