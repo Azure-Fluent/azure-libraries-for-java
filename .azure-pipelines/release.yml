@@ -17,6 +17,29 @@ steps:
   inputs:
     mavenServiceConnections: azure-libraries-for-java-maven
 - task: Maven@3
+  condition: eq($(buildFromPom), true)
+  inputs:
+    mavenPomFile: 'pom.xml'
+    mavenOptions: '-DskipTests'
+    javaHomeOption: 'JDKVersion'
+    jdkVersionOption: '1.8'
+    jdkArchitectureOption: 'x64'
+    publishJUnitResults: false
+    testResultsFiles: '**/surefire-reports/TEST-*.xml'
+    goals: 'source:jar javadoc:jar package'
+- task: Maven@3
+  condition: eq($(buildFromPom), true)
+  inputs:
+    mavenPomFile: 'pom.xml'
+    mavenOptions: ''
+    javaHomeOption: 'JDKVersion'
+    jdkVersionOption: '1.8'
+    jdkArchitectureOption: 'x64'
+    publishJUnitResults: false
+    testResultsFiles: '**/surefire-reports/TEST-*.xml'
+    goals: 'com.microsoft.azure:bundler-maven-plugin:bundle'
+- task: Maven@3
+  condition: ne($(buildFromPom), true)
   inputs:
     mavenPomFile: 'pom.xml'
     mavenOptions: '-Xmx3072m -Dversion=$(VERSION) -DdevVersion=$(DEVVERSION)-SNAPSHOT'
@@ -32,3 +55,4 @@ steps:
     python3 tools/pull-request.py azure azure-libraries-for-java "Release $(VERSION)" "azure-fluent:$(VERSION)"
   env:
     GITHUB_TOKEN: $(GITHUB_TOKEN)
+  condition: ne($(buildFromPom), true)
