@@ -16,6 +16,19 @@ steps:
 - task: MavenAuthenticate@0
   inputs:
     mavenServiceConnections: azure-libraries-for-java-maven
+
+- task: Maven@3
+  displayName: Start Jetty
+  condition: eq(variables['buildFromPom'], true)
+  inputs:
+    mavenPomFile: pom.xml
+    options: '$(ProfileFlag)'
+    mavenOptions: '$(LoggingOptions)'
+    javaHomeOption: 'JDKVersion'
+    jdkVersionOption: '1.8'
+    jdkArchitectureOption: 'x64'
+    publishJUnitResults: false
+    goals: 'jetty:run-forked'
 - task: Maven@3
   displayName: Build package with pom.xml
   condition: eq(variables['buildFromPom'], true)
@@ -26,7 +39,6 @@ steps:
     jdkVersionOption: '1.8'
     jdkArchitectureOption: 'x64'
     publishJUnitResults: false
-    testResultsFiles: '**/surefire-reports/TEST-*.xml'
     goals: 'source:jar javadoc:jar package -DskipTests'
 - task: Maven@3
   displayName: Uploaded package
@@ -38,7 +50,6 @@ steps:
     jdkVersionOption: '1.8'
     jdkArchitectureOption: 'x64'
     publishJUnitResults: false
-    testResultsFiles: '**/surefire-reports/TEST-*.xml'
     goals: 'com.microsoft.azure:bundler-maven-plugin:bundle'
 - task: Maven@3
   displayName: Auto build release with new version
@@ -50,7 +61,6 @@ steps:
     jdkVersionOption: '1.8'
     jdkArchitectureOption: 'x64'
     publishJUnitResults: false
-    testResultsFiles: '**/surefire-reports/TEST-*.xml'
     goals: 'com.microsoft.azure:bundler-maven-plugin:auto'
 - bash: |
     git log -2
