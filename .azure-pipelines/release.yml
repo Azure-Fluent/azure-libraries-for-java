@@ -22,8 +22,8 @@ steps:
   condition: eq(variables['buildFromPom'], true)
   inputs:
     mavenPomFile: pom.xml
-    options: '$(ProfileFlag)'
-    mavenOptions: '$(LoggingOptions)'
+    options: ''
+    mavenOptions: ''
     javaHomeOption: 'JDKVersion'
     jdkVersionOption: '1.8'
     jdkArchitectureOption: 'x64'
@@ -31,7 +31,7 @@ steps:
     goals: 'jetty:run-forked'
 - task: Maven@3
   displayName: Build package with pom.xml
-  condition: eq(variables['buildFromPom'], true)
+  condition: eq(succeeded(), variables['buildFromPom'], true)
   inputs:
     mavenPomFile: 'pom.xml'
     mavenOptions: ''
